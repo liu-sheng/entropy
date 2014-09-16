@@ -17,4 +17,4 @@ from foobar import service
 
 def main():
     service.prepare_service()
-    os_service.launch(manager.AgentManager()).wait()
+    os_service.launch(manager.AgentManager('foobar')).wait()

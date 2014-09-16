@@ -20,6 +20,6 @@ LOG = log.getLogger(__name__)
 
 
 def prepare_service():
-    cfg.CONF(project='para')
-    log.setup('para')
+    cfg.CONF(project='foobar')
+    log.setup('foobar')
     cfg.CONF.log_opt_values(LOG, logging.DEBUG)
