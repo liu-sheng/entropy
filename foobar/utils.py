@@ -10,9 +10,3 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-import eventlet
-# NOTE(jd) We need to monkey patch the socket and select module for,
-# at least, oslo.messaging, otherwise everything's blocked on its
-# first read() or select(), thread need to be patched too, because
-# oslo.messaging use threading.local
-eventlet.monkey_patch(socket=True, select=True, thread=True)

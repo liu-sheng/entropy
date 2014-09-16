@@ -12,8 +12,10 @@
 # under the License.
 
 from foobar.openstack.common import service as os_service
-
+from foobar.openstack.common import log
 from stevedore import extension
+
+LOG = log.getLogger(__name__)
 
 
 class AgentManager(os_service.Service):
@@ -29,3 +31,10 @@ class AgentManager(os_service.Service):
             namespace=namespace,
             invoke_on_load=True,
         )
+
+    def start(self):
+        def _test_task():
+            LOG.info(_("test service !!!!"))
+
+        self.tg.add_timer(1000,
+                          task=_test_task)
