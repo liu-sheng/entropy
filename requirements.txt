@@ -1,6 +1,5 @@
 babel
 iso8601
-lockfile>=0.9.1
 netaddr
 oslo.config>=1.4.0.0a1
 oslo.db
@@ -8,11 +7,7 @@ oslo.utils
 oslotest
 pandas
 pecan
-posix_ipc
-python-swiftclient
 six
 sqlalchemy
 stevedore
 tooz>=0.3
-voluptuous
-werkzeug
