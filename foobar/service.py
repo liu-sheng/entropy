@@ -24,7 +24,7 @@ import logging
 CLI_OPTIONS = [
     cfg.StrOpt('os-username',
                deprecated_group="DEFAULT",
-               default=os.environ.get('OS_USERNAME', 'ceilometer'),
+               default=os.environ.get('OS_USERNAME', 'foobar'),
                help='User name to use for OpenStack service access.'),
     cfg.StrOpt('os-password',
                deprecated_group="DEFAULT",

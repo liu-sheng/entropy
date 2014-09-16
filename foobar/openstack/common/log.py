@@ -43,13 +43,13 @@ from six import moves
 
 _PY26 = sys.version_info[0:2] == (2, 6)
 
-from ceilometer.openstack.common.gettextutils import _
-from ceilometer.openstack.common import importutils
-from ceilometer.openstack.common import jsonutils
-from ceilometer.openstack.common import local
+from foobar.openstack.common.gettextutils import _
+from foobar.openstack.common import importutils
+from foobar.openstack.common import jsonutils
+from foobar.openstack.common import local
 # NOTE(flaper87): Pls, remove when graduating this module
 # from the incubator.
-from ceilometer.openstack.common.strutils import mask_password  # noqa
+from foobar.openstack.common.strutils import mask_password  # noqa
 
 
 _DEFAULT_LOG_DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -503,7 +503,7 @@ def _setup_logging_from_conf(project, version):
     if CONF.publish_errors:
         try:
             handler = importutils.import_object(
-                "ceilometer.openstack.common.log_handler.PublishErrorsHandler",
+                "foobar.openstack.common.log_handler.PublishErrorsHandler",
                 logging.ERROR)
         except ImportError:
             handler = importutils.import_object(

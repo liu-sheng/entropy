@@ -18,8 +18,8 @@ import errno
 import os
 import tempfile
 
-from ceilometer.openstack.common import excutils
-from ceilometer.openstack.common import log as logging
+from foobar.openstack.common import excutils
+from foobar.openstack.common import log as logging
 
 LOG = logging.getLogger(__name__)
 

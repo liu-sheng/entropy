@@ -37,15 +37,15 @@ import eventlet
 from eventlet import event
 from oslo.config import cfg
 
-from ceilometer.openstack.common import eventlet_backdoor
-from ceilometer.openstack.common.gettextutils import _LE, _LI, _LW
-from ceilometer.openstack.common import importutils
-from ceilometer.openstack.common import log as logging
-from ceilometer.openstack.common import systemd
-from ceilometer.openstack.common import threadgroup
+from foobar.openstack.common import eventlet_backdoor
+from foobar.openstack.common.gettextutils import _LE, _LI, _LW
+from foobar.openstack.common import importutils
+from foobar.openstack.common import log as logging
+from foobar.openstack.common import systemd
+from foobar.openstack.common import threadgroup
 
 
-rpc = importutils.try_import('ceilometer.openstack.common.rpc')
+rpc = importutils.try_import('foobar.openstack.common.rpc')
 CONF = cfg.CONF
 LOG = logging.getLogger(__name__)
 

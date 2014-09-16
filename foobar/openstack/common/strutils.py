@@ -24,7 +24,7 @@ import unicodedata
 
 import six
 
-from ceilometer.openstack.common.gettextutils import _
+from foobar.openstack.common.gettextutils import _
 
 
 UNIT_PREFIX_EXPONENT = {

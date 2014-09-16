@@ -29,8 +29,8 @@ import eventlet.backdoor
 import greenlet
 from oslo.config import cfg
 
-from ceilometer.openstack.common.gettextutils import _LI
-from ceilometer.openstack.common import log as logging
+from foobar.openstack.common.gettextutils import _LI
+from foobar.openstack.common import log as logging
 
 help_for_backdoor_port = (
     "Acceptable values are 0, <port>, and <start>:<end>, where 0 results "

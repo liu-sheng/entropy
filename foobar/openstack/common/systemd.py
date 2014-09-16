@@ -20,7 +20,7 @@ import os
 import socket
 import sys
 
-from ceilometer.openstack.common import log as logging
+from foobar.openstack.common import log as logging
 
 
 LOG = logging.getLogger(__name__)

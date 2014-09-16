@@ -31,10 +31,10 @@ from oslo.config import cfg
 import six
 import stevedore.named
 
-from ceilometer.openstack.common import gettextutils
-from ceilometer.openstack.common import importutils
+from foobar.openstack.common import gettextutils
+from foobar.openstack.common import importutils
 
-gettextutils.install('ceilometer')
+gettextutils.install('foobar')
 
 STROPT = "StrOpt"
 BOOLOPT = "BoolOpt"
@@ -238,11 +238,11 @@ def _sanitize_default(name, value):
         return '10.0.0.1'
     elif value in (hostname, fqdn):
         if 'host' in name:
-            return 'ceilometer'
+            return 'foobar'
     elif value.endswith(hostname):
-        return value.replace(hostname, 'ceilometer')
+        return value.replace(hostname, 'foobar')
     elif value.endswith(fqdn):
-        return value.replace(fqdn, 'ceilometer')
+        return value.replace(fqdn, 'foobar')
     elif value.strip() != value:
         return '"%s"' % value
     return value

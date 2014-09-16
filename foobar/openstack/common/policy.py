@@ -84,10 +84,10 @@ import six
 import six.moves.urllib.parse as urlparse
 import six.moves.urllib.request as urlrequest
 
-from ceilometer.openstack.common import fileutils
-from ceilometer.openstack.common.gettextutils import _, _LE
-from ceilometer.openstack.common import jsonutils
-from ceilometer.openstack.common import log as logging
+from foobar.openstack.common import fileutils
+from foobar.openstack.common.gettextutils import _, _LE
+from foobar.openstack.common import jsonutils
+from foobar.openstack.common import log as logging
 
 
 policy_opts = [

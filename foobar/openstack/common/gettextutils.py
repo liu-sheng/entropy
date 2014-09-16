@@ -19,7 +19,7 @@ gettext for openstack-common modules.
 
 Usual usage in an openstack.common module:
 
-    from ceilometer.openstack.common.gettextutils import _
+    from foobar.openstack.common.gettextutils import _
 """
 
 import copy
@@ -121,7 +121,7 @@ class TranslatorFactory(object):
 # module within each application.
 
 # Create the global translation functions.
-_translators = TranslatorFactory('ceilometer')
+_translators = TranslatorFactory('foobar')
 
 # The primary translation function using the well-known name "_"
 _ = _translators.primary
@@ -182,7 +182,7 @@ class Message(six.text_type):
     """
 
     def __new__(cls, msgid, msgtext=None, params=None,
-                domain='ceilometer', *args):
+                domain='foobar', *args):
         """Create a new Message object.
 
         In order for translation to work gettext requires a message ID, this

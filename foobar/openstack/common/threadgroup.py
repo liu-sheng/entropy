@@ -16,8 +16,8 @@ import threading
 import eventlet
 from eventlet import greenpool
 
-from ceilometer.openstack.common import log as logging
-from ceilometer.openstack.common import loopingcall
+from foobar.openstack.common import log as logging
+from foobar.openstack.common import loopingcall
 
 
 LOG = logging.getLogger(__name__)

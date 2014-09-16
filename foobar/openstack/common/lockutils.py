@@ -28,8 +28,8 @@ import weakref
 
 from oslo.config import cfg
 
-from ceilometer.openstack.common import fileutils
-from ceilometer.openstack.common.gettextutils import _, _LE, _LI
+from foobar.openstack.common import fileutils
+from foobar.openstack.common.gettextutils import _, _LE, _LI
 
 
 LOG = logging.getLogger(__name__)

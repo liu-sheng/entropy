@@ -24,7 +24,7 @@ import traceback
 
 import six
 
-from ceilometer.openstack.common.gettextutils import _LE
+from foobar.openstack.common.gettextutils import _LE
 
 
 class save_and_reraise_exception(object):

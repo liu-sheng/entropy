@@ -53,10 +53,10 @@ else:
 import six
 import six.moves.xmlrpc_client as xmlrpclib
 
-from ceilometer.openstack.common import gettextutils
-from ceilometer.openstack.common import importutils
-from ceilometer.openstack.common import strutils
-from ceilometer.openstack.common import timeutils
+from foobar.openstack.common import gettextutils
+from foobar.openstack.common import importutils
+from foobar.openstack.common import strutils
+from foobar.openstack.common import timeutils
 
 netaddr = importutils.try_import("netaddr")
 
