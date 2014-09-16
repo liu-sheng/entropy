@@ -36,7 +36,7 @@ def _get_driver(name, conf):
     :param name: The name of the driver.
     :param conf: The conf to pass to the driver.
     """
-    d = driver.DriverManager('gnocchi.indexer',
+    d = driver.DriverManager('foobar.indexer',
                              name).driver
     return d(conf)
 

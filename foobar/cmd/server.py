@@ -10,3 +10,12 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+
+from foobar import manager
+from foobar.openstack.common import service as os_service
+from foobar import service
+
+
+def main():
+    service.prepare_service()
+    os_service.launch(manager.AgentManager('foobar')).wait()

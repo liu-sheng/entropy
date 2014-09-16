@@ -12,9 +12,9 @@
 # under the License.
 from oslo.config import cfg
 
-from gnocchi.indexer import sqlalchemy as sql_db
-from gnocchi.rest import app
-from gnocchi import service
+from foobar.indexer import sqlalchemy as sql_db
+from foobar.rest import app
+from foobar import service
 
 
 def storage_dbsync():

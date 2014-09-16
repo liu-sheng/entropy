@@ -24,8 +24,8 @@ import six
 import voluptuous
 import werkzeug.http
 
-from gnocchi import indexer
-from gnocchi import storage
+from foobar import indexer
+from foobar import storage
 
 
 def deserialize(schema):

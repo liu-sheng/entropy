@@ -36,7 +36,7 @@ API_SERVICE_OPTS = [
 ]
 
 opt_group = cfg.OptGroup(name='api',
-                         title='Options for the gnocchi-api service')
+                         title='Options for the foobar-api service')
 cfg.CONF.register_group(opt_group)
 cfg.CONF.register_opts(API_SERVICE_OPTS, opt_group)
 
@@ -54,8 +54,8 @@ class DBHook(pecan.hooks.PecanHook):
 
 PECAN_CONFIG = {
     'app': {
-        'root': 'gnocchi.rest.RootController',
-        'modules': ['gnocchi.rest'],
+        'root': 'foobar.rest.RootController',
+        'modules': ['foobar.rest'],
     },
     'conf': cfg.CONF,
 }

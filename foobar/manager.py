@@ -13,8 +13,19 @@
 
 from foobar.openstack.common import service as os_service
 
+from stevedore import extension
+
 
 class AgentManager(os_service.Service):
 
     def __init__(self, namespace, default_discovery=None, group_prefix=None):
         super(AgentManager, self).__init__()
+
+    @staticmethod
+    def _extensions(category, agent_ns=None):
+        namespace = ('foobar.%s.%s' % (category, agent_ns) if agent_ns
+                     else 'foobar.%s' % category)
+        return extension.ExtensionManager(
+            namespace=namespace,
+            invoke_on_load=True,
+        )

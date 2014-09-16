@@ -10,16 +10,74 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
-import logging
+
+import os
+import sys
 
 from oslo.config import cfg
-
 from foobar.openstack.common import log
+from foobar.openstack.common import gettextutils
+
+import logging
+
+
+CLI_OPTIONS = [
+    cfg.StrOpt('os-username',
+               deprecated_group="DEFAULT",
+               default=os.environ.get('OS_USERNAME', 'ceilometer'),
+               help='User name to use for OpenStack service access.'),
+    cfg.StrOpt('os-password',
+               deprecated_group="DEFAULT",
+               secret=True,
+               default=os.environ.get('OS_PASSWORD', 'admin'),
+               help='Password to use for OpenStack service access.'),
+    cfg.StrOpt('os-tenant-id',
+               deprecated_group="DEFAULT",
+               default=os.environ.get('OS_TENANT_ID', ''),
+               help='Tenant ID to use for OpenStack service access.'),
+    cfg.StrOpt('os-tenant-name',
+               deprecated_group="DEFAULT",
+               default=os.environ.get('OS_TENANT_NAME', 'admin'),
+               help='Tenant name to use for OpenStack service access.'),
+    cfg.StrOpt('os-cacert',
+               default=os.environ.get('OS_CACERT'),
+               help='Certificate chain for SSL validation.'),
+    cfg.StrOpt('os-auth-url',
+               deprecated_group="DEFAULT",
+               default=os.environ.get('OS_AUTH_URL',
+                                      'http://localhost:5000/v2.0'),
+               help='Auth URL to use for OpenStack service access.'),
+    cfg.StrOpt('os-region-name',
+               deprecated_group="DEFAULT",
+               default=os.environ.get('OS_REGION_NAME'),
+               help='Region name to use for OpenStack service endpoints.'),
+    cfg.StrOpt('os-endpoint-type',
+               default=os.environ.get('OS_ENDPOINT_TYPE', 'publicURL'),
+               help='Type of endpoint in Identity service catalog to use for '
+                    'communication with OpenStack services.'),
+    cfg.BoolOpt('insecure',
+                default=False,
+                help='Disables X.509 certificate validation when an '
+                     'SSL connection to Identity Service is established.'),
+]
+cfg.CONF.register_cli_opts(CLI_OPTIONS, group="service_credentials")
+
+cfg.CONF.import_opt('default_log_levels',
+                    'foobar.openstack.common.log')
 
 LOG = log.getLogger(__name__)
 
 
-def prepare_service():
+def prepare_service(argv=None):
     cfg.CONF(project='foobar')
     log.setup('foobar')
     cfg.CONF.log_opt_values(LOG, logging.DEBUG)
+
+    gettextutils.install('foobar')
+    gettextutils.enable_lazy()
+
+    cfg.set_defaults(log.log_opts)
+    if argv is None:
+        argv = sys.argv
+    cfg.CONF(argv[1:], project='foobar')
+    log.setup('foobar')
