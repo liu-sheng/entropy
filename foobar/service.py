@@ -80,4 +80,4 @@ def prepare_service(argv=None):
     if argv is None:
         argv = sys.argv
     cfg.CONF(argv[1:], project='foobar')
-    log.setup('foobar')
+

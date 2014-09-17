@@ -14,6 +14,7 @@
 from foobar.openstack.common import service as os_service
 from foobar.openstack.common import log
 from stevedore import extension
+import time
 
 LOG = log.getLogger(__name__)
 
@@ -32,9 +33,19 @@ class AgentManager(os_service.Service):
             invoke_on_load=True,
         )
 
-    def start(self):
-        def _test_task():
-            LOG.info(_("test service !!!!"))
+    def _test_db(self):
+        from foobar import db
+        from oslo.config import cfg
+        conn = db.get_connection_from_config(cfg.CONF)
+        conn.record_resources('12345', 'test', 'test_meta')
 
-        self.tg.add_timer(1000,
-                          task=_test_task)
+    def start(self):
+        self._test_db()
+        while True:
+            LOG.error('just test!!!')
+            time.sleep(5)
+
+
+
+
+
