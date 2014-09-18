@@ -26,6 +26,10 @@ from oslo.db.sqlalchemy import models
 from sqlalchemy.ext import declarative
 from oslo.db.sqlalchemy import session
 from foobar.db.sqlalchemy import models
+from oslo.db import exception as db_exception
+
+from foobar import exception
+from foobar.db import api_models
 
 
 Base = declarative.declarative_base()
@@ -39,12 +43,9 @@ class Connection(object):
         )
 
     def upgrade(self):
-        #TODO use migration?
-        #path = os.path.join(os.path.abspath(os.path.dirname(__file__)),
-        #                    'sqlalchemy', 'migrate_repo')
-        #migration.db_sync(self._engine_facade.get_engine(), path)
-        engine = self._engine_facade.get_engine()
-        Base.metadata.create_all(engine)
+        path = os.path.join(os.path.abspath(os.path.dirname(__file__)),
+                            'sqlalchemy', 'migrate_repo')
+        migration.db_sync(self._engine_facade.get_engine(), path)
 
     def clear(self):
         engine = self._engine_facade.get_engine()
@@ -56,6 +57,19 @@ class Connection(object):
     def record_resources(self, resource_id, resource_type, resource_meta):
         session = self._engine_facade.get_session()
         with session.begin(subtransactions=True):
-            event = models.Resource(resource_id, resource_type,
-                                 resource_meta)
+            event = models.Resource(id=resource_id,
+                                    resource_type=resource_type,
+                                    resource_metadata=resource_meta)
             session.add(event)
+            try:
+                session.flush()
+            except db_exception.DBDuplicateEntry:
+                raise exception.ResourceAlreadyExists(resource_id)
+
+    def get_resources(self, **kwargs):
+        session = self._engine_facade.get_session()
+        query = session.query()
+        for row in query.all():
+            yield api_models.Resource(resource_id=row.id,
+                                      resource_type=row.resource_type,
+                                      resource_meta=row.resource_metadata)

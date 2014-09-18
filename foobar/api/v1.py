@@ -11,4 +11,41 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-#TODO
+from oslo.utils import strutils
+from oslo.utils import timeutils
+import pecan
+from pecan import rest
+
+
+class InstancesController(rest.RestController):
+
+    @pecan.expose('json')
+    def post(self):
+        try:
+            resource = pecan.request.db_conn.record_resources(
+                '12345', 'test', 'test_meta')
+        except Exception:
+            raise
+        pecan.response.status = 201
+        return resource
+
+    @pecan.expose('json')
+    def get_all(self, **kwargs):
+        return [r for r in pecan.request.db_conn.get_resources()]
+
+
+class ResourcesController(rest.RestController):
+    instance = InstancesController()
+
+
+class V1Controller(object):
+    resource = ResourcesController()
+
+
+class RootController(object):
+    v1 = V1Controller()
+
+    @staticmethod
+    @pecan.expose(content_type="text/plain")
+    def index():
+        return "Nom nom nom."

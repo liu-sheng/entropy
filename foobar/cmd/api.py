@@ -12,7 +12,7 @@
 # under the License.
 from oslo.config import cfg
 
-from foobar.rest import app
+from foobar.api import app
 from foobar import service
 
 
