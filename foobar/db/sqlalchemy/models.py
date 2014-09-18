@@ -23,25 +23,70 @@ from oslo.db.sqlalchemy import session as db_session
 from oslo.utils import timeutils
 from oslo.db.sqlalchemy import models
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.types import TypeDecorator
+from foobar import utils
+from oslo.utils import timeutils
 
 
 class FoobarBase(models.ModelBase):
     __table_args__ = {'mysql_charset': "utf8",
                       'mysql_engine': "InnoDB"}
 
+    def __setitem__(self, key, value):
+        setattr(self, key, value)
+
+    def __getitem__(self, key):
+        return getattr(self, key)
+
+    def update(self, values):
+        """Make the model object behave like a dict."""
+        for k, v in six.iteritems(values):
+            setattr(self, k, v)
+
 Base = declarative_base()
+
+
+class PreciseTimestamp(TypeDecorator):
+    """Represents a timestamp precise to the microsecond."""
+
+    impl = DateTime
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == 'mysql':
+            return dialect.type_descriptor(DECIMAL(precision=20,
+                                                   scale=6,
+                                                   asdecimal=True))
+        return self.impl
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return value
+        elif dialect.name == 'mysql':
+            return utils.dt_to_decimal(value)
+        return value
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return value
+        elif dialect.name == 'mysql':
+            return utils.decimal_to_dt(value)
+        return value
 
 
 class Resource(Base, FoobarBase):
     __tablename__ = 'resource'
 
-    id = sqlalchemy.Column(uuid, primary_key=True)
+    id = sqlalchemy.Column(sqlalchemy.String(255), primary_key=True)
     resource_type = sqlalchemy.Column(sqlalchemy.String(255), nullable=False)
-    resource_metadata = sqlalchemy.Column(sqlalchemy.String(5000),
-                                          nullable=False)
+    user_id = sqlalchemy.Column(sqlalchemy.String(255))
+    project_id = sqlalchemy.Column(sqlalchemy.String(255))
+    ha_condition = sqlalchemy.Column(sqlalchemy.String(255))
+    created_at = Column(PreciseTimestamp,
+                        default=lambda: timeutils.utcnow())
+    resource_metadata = sqlalchemy.Column(sqlalchemy.JSONEncodedDict)
 
 
 class History(Base, FoobarBase):
     __tablename__ = 'history'
-    id = sqlalchemy.Column(uuid, primary_key=True)
+    id = sqlalchemy.Column(sqlalchemy.String(255), primary_key=True)
 
