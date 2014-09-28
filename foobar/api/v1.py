@@ -11,16 +11,31 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import functools
+
 from oslo.utils import strutils
 from oslo.utils import timeutils
 import pecan
 from pecan import rest
+from wsme import types as wtypes
+import wsmeext.pecan as wsme_pecan
+
+
+class Instance(wtypes.Base):
+    id = wtypes.text
+
 
 
 class InstancesController(rest.RestController):
+    _custom_actions = {
+        'history': ['GET'],
+    }
 
-    @pecan.expose('json')
-    def post(self):
+    @wsme_pecan.wsexpose(Instance, body=Instance, status_code=201)
+    def post(self, data):
+        import pdb
+        pdb.set_trace()
+        instance_id = data.get('id')
         try:
             resource = pecan.request.db_conn.record_resources(
                 '12345', 'test', 'test_meta')
@@ -30,8 +45,12 @@ class InstancesController(rest.RestController):
         return resource
 
     @pecan.expose('json')
-    def get_all(self, **kwargs):
+    def get_all(self):
         return [r for r in pecan.request.db_conn.get_resources()]
+
+    @pecan.expose('json')
+    def history(self):
+        return None
 
 
 class ResourcesController(rest.RestController):

@@ -25,7 +25,7 @@ from oslo.utils import timeutils
 from oslo.db.sqlalchemy import models
 from sqlalchemy.ext import declarative
 from oslo.db.sqlalchemy import session
-from foobar.db.sqlalchemy import models
+from foobar.db.sqlalchemy import models as db_models
 from oslo.db import exception as db_exception
 
 from foobar import exception
@@ -68,8 +68,13 @@ class Connection(object):
 
     def get_resources(self, **kwargs):
         session = self._engine_facade.get_session()
-        query = session.query()
+        query = session.query(db_models.Resource.id,
+                              db_models.Resource.resource_type,
+                              db_models.Resource.user_id,
+                              db_models.Resource.project_id,
+                              db_models.Resource.ha_condition,
+                              db_models.Resource.resource_metadata)
         for row in query.all():
             yield api_models.Resource(resource_id=row.id,
                                       resource_type=row.resource_type,
-                                      resource_meta =row.resource_metadata)
+                                      resource_meta=row.resource_metadata)

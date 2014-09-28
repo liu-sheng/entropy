@@ -13,13 +13,16 @@
 import os
 import socket
 from wsgiref import simple_server
+import threading
 
 import netaddr
 from oslo.config import cfg
 import pecan
+from pecan import hooks
 
 from foobar.openstack.common import log
 from foobar import db
+from foobar.api import middleware
 
 
 LOG = log.getLogger(__name__)
@@ -51,7 +54,6 @@ class DBHook(pecan.hooks.PecanHook):
     def on_route(self, state):
         state.request.db_conn = self.db_conn
 
-
 PECAN_CONFIG = {
     'app': {
         'root': 'foobar.api.v1.RootController',
@@ -63,12 +65,14 @@ PECAN_CONFIG = {
 
 def setup_app(pecan_config=PECAN_CONFIG):
     app_hooks = [DBHook(db.get_connection_from_config(cfg.CONF))]
-    return pecan.make_app(
+    pecan.configuration.set_config(dict(pecan_config), overwrite=True)
+    app = pecan.make_app(
         pecan_config['app']['root'],
         debug=CONF.debug,
         hooks=app_hooks,
-        guess_content_type_from_ext=False,
+        guess_content_type_from_ext=False
     )
+    return app
 
 
 def get_server_cls(host):

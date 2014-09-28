@@ -33,12 +33,6 @@ class AgentManager(os_service.Service):
             invoke_on_load=True,
         )
 
-    def _test_db(self):
-        from foobar import db
-        from oslo.config import cfg
-        conn = db.get_connection_from_config(cfg.CONF)
-        conn.record_resources('12345', 'test', 'test_meta')
-
     def start(self):
         self._test_db()
         while True:

@@ -13,7 +13,8 @@
 
 from __future__ import absolute_import
 import sqlalchemy
-import uuid
+import json
+import six
 
 from oslo.db.sqlalchemy import migration
 from oslo.config import cfg
@@ -24,8 +25,10 @@ from oslo.utils import timeutils
 from oslo.db.sqlalchemy import models
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.types import TypeDecorator
-from foobar import utils
+from sqlalchemy import Float, Boolean, Text, DateTime
+from sqlalchemy.dialects.mysql import DECIMAL
 from oslo.utils import timeutils
+from foobar import utils
 
 
 class FoobarBase(models.ModelBase):
@@ -44,6 +47,22 @@ class FoobarBase(models.ModelBase):
             setattr(self, k, v)
 
 Base = declarative_base()
+
+
+class JSONEncodedDict(TypeDecorator):
+    """Represents an immutable structure as a json-encoded string."""
+
+    impl = sqlalchemy.String
+
+    def process_bind_param(self, value, dialect):
+        if value is not None:
+            value = json.dumps(value)
+        return value
+
+    def process_result_value(self, value, dialect):
+        if value is not None:
+            value = json.loads(value)
+        return value
 
 
 class PreciseTimestamp(TypeDecorator):
@@ -81,12 +100,11 @@ class Resource(Base, FoobarBase):
     user_id = sqlalchemy.Column(sqlalchemy.String(255))
     project_id = sqlalchemy.Column(sqlalchemy.String(255))
     ha_condition = sqlalchemy.Column(sqlalchemy.String(255))
-    created_at = Column(PreciseTimestamp,
-                        default=lambda: timeutils.utcnow())
-    resource_metadata = sqlalchemy.Column(sqlalchemy.JSONEncodedDict)
+    created_at = sqlalchemy.Column(PreciseTimestamp,
+                                   default=lambda: timeutils.utcnow())
+    resource_metadata = sqlalchemy.Column(JSONEncodedDict)
 
 
 class History(Base, FoobarBase):
     __tablename__ = 'history'
     id = sqlalchemy.Column(sqlalchemy.String(255), primary_key=True)
-
