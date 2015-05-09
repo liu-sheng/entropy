@@ -95,7 +95,7 @@ class PreciseTimestamp(TypeDecorator):
 class Resource(Base, entropyBase):
     __tablename__ = 'resource'
 
-    id = sqlalchemy.Column(sqlalchemy.String(255), primary_key=True)
+    resource_id = sqlalchemy.Column(sqlalchemy.String(255), primary_key=True)
     resource_type = sqlalchemy.Column(sqlalchemy.String(255), nullable=False)
     user_id = sqlalchemy.Column(sqlalchemy.String(255))
     project_id = sqlalchemy.Column(sqlalchemy.String(255))

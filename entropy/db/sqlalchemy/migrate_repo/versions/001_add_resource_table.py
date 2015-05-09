@@ -21,6 +21,7 @@ from sqlalchemy import MetaData
 from sqlalchemy import String
 from sqlalchemy import Table
 from sqlalchemy import UniqueConstraint
+from entropy.db.sqlalchemy import models as db_models
 
 
 def upgrade(migrate_engine):
@@ -28,13 +29,13 @@ def upgrade(migrate_engine):
 
     resource = Table(
         'resource', meta,
-        Column('id', String(255), primary_key=True, index=True),
+        Column('resource_id', String(255), primary_key=True, index=True),
         Column('resource_type', String(255)),
         Column('ha_condition', String(255)),
         Column('resource_metadata', String(5000)),
         Column('project_id', String(255), index=True),
         Column('user_id', String(255), index=True),
-        Column('created_at', DateTime(timezone=False), index=True),
+        Column('created_at', db_models.PreciseTimestamp(), index=True),
         mysql_engine='InnoDB',
         mysql_charset='utf8',
     )

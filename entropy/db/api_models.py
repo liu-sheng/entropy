@@ -49,7 +49,7 @@ class Model(object):
 
 
 class Resource(Model):
-    def __init__(self, message_id, event_type, generated, traits):
-        super(self, Resource).__init__(self, resource_id=resource_id,
-                                    resource_type=resource_type,
-                                    resource_meta=resource_meta)
+    def __init__(self, resource_id, resource_type, resource_meta):
+        super(Resource, self).__init__(resource_id=resource_id,
+                                       resource_type=resource_type,
+                                       resource_meta=resource_meta)

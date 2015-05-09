@@ -22,7 +22,6 @@ from pecan import hooks
 
 from entropy.openstack.common import log
 from entropy import db
-from entropy.api import middleware
 
 
 LOG = log.getLogger(__name__)

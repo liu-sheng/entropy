@@ -57,24 +57,26 @@ class Connection(object):
     def record_resources(self, resource_id, resource_type, resource_meta):
         session = self._engine_facade.get_session()
         with session.begin(subtransactions=True):
-            event = models.Resource(id=resource_id,
-                                    resource_type=resource_type,
-                                    resource_metadata=resource_meta)
+            event = db_models.Resource(resource_id=resource_id,
+                                       resource_type=resource_type,
+                                       resource_metadata=resource_meta)
             session.add(event)
             try:
                 session.flush()
             except db_exception.DBDuplicateEntry:
                 raise exception.ResourceAlreadyExists(resource_id)
-
+        return api_models.Resource(resource_id=resource_id,
+                                   resource_type=resource_type,
+                                   resource_meta=resource_meta)
     def get_resources(self, **kwargs):
         session = self._engine_facade.get_session()
-        query = session.query(db_models.Resource.id,
+        query = session.query(db_models.Resource.resource_id,
                               db_models.Resource.resource_type,
                               db_models.Resource.user_id,
                               db_models.Resource.project_id,
                               db_models.Resource.ha_condition,
                               db_models.Resource.resource_metadata)
         for row in query.all():
-            yield api_models.Resource(resource_id=row.id,
+            yield api_models.Resource(resource_id=row.resource_id,
                                       resource_type=row.resource_type,
                                       resource_meta=row.resource_metadata)

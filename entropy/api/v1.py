@@ -22,39 +22,37 @@ import wsmeext.pecan as wsme_pecan
 
 
 class Instance(wtypes.Base):
-    id = wtypes.text
+    resource_id = wtypes.text
+    resource_type = wtypes.text
+    resource_meta = wtypes.DictType(wtypes.text, wtypes.text)
+
+    @classmethod
+    def from_db_model(cls, m):
+        return cls(**(m.as_dict()))
 
 
-
-class InstancesController(rest.RestController):
+class ResourcesController(rest.RestController):
     _custom_actions = {
         'history': ['GET'],
     }
 
     @wsme_pecan.wsexpose(Instance, body=Instance, status_code=201)
     def post(self, data):
-        import pdb
-        pdb.set_trace()
-        instance_id = data.get('id')
         try:
             resource = pecan.request.db_conn.record_resources(
-                '12345', 'test', 'test_meta')
+                data.resource_id, 'instance', {})
         except Exception:
             raise
         pecan.response.status = 201
-        return resource
+        return Instance.from_db_model(resource)
 
     @pecan.expose('json')
     def get_all(self):
-        return [r for r in pecan.request.db_conn.get_resources()]
+        return [r.as_dict() for r in pecan.request.db_conn.get_resources()]
 
     @pecan.expose('json')
     def history(self):
-        return None
-
-
-class ResourcesController(rest.RestController):
-    instance = InstancesController()
+        return {}
 
 
 class V1Controller(object):
